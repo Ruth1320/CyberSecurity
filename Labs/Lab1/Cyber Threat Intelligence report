@@ -1,194 +1,128 @@
-#Lab work 1 - Cyber Threat Intelligence report mapping Tactics and Technics
-Names of the students: 
-Ruth Dubinsky 
-Dana savenko
+# Lab Work 1 – Cyber Threat Intelligence Report  
+## Mapping Tactics and Techniques
+
+**Names of the students:**
+- Ruth Dubinsky  
+- Dana Savenko
+
+**Link to the source CTI report:**  
+[Jingle Thief – Microsoft Threat Intelligence](https://unit42.paloaltonetworks.com/cloud-based-gift-card-fraud-campaign/)
+
+## Short Description
+This report describes how the attacking group infiltrated global enterprises in the retail and consumer services sectors, and how, by taking advantage of the organizations' cloud services, they managed to issue themselves gift cards, which they later sold for their own profit.
+
+## Schema
+![Attack Schema](pic1.png)
+
+## Explanation
+1. Phishing and smishing for cloud credentials  
+   The attackers used phishing emails and SMS messages to lure employees into logging in to a counterfeit Microsoft 365 portal, capturing their credentials.  
+
+2. Mining SharePoint and OneDrive for gift card intel  
+   After gaining initial access, the attackers gathered intelligence regarding gift card workflows, financial processes, and related information from internal documentation.  
+
+3. Sending phishing emails for lateral movement  
+   Attackers used phishing emails from already compromised accounts to move laterally within organizations, gaining more access across cloud systems.  
+
+4. Forwarding emails to an external sender  
+   Automatic email forwarding was set up to collect sensitive information and maintain access even after detection.  
+
+5. Moving phishing emails to Deleted Items  
+   This hides traces and reduces chances of detection by defenders.  
+
+6. Modifying authentication methods  
+   Attackers changed MFA settings or added their own authentication methods to maintain persistent access.
+
+## Enterprise Tactics
+- Reconnaissance
+- Initial Access
+- Persistence
+- Defense Evasion
+- Credential Access
+- Discovery
+- Lateral Movement
+- Collection
+- Exfiltration
+- Resource Development
+
+## Reconnaissance
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1592 | Gather Victim Host Information | Collected intelligence on cloud hosts and portals |
+| T1589 | Gather Victim Identity Information | Identifying employees for phishing and smishing |
+| T1589.001 | Credentials | Stole credentials via counterfeit Microsoft 365 login portals |
+| T1589.002 | Email Addresses | Collected employee emails to launch targeted phishing campaigns |
+| T1589.003 | Employee Names | Gathered names to personalize phishing messages |
+| T1591 | Gather Victim Organization Information | Mapped organizational structures from SharePoint/OneDrive |
+| T1591.003 | Identify Business Tempo | Aligned activity with holiday periods |
+| T1591.004 | Identify Roles | Checked who can issue gift cards |
+| T1566.002 | Spearphishing Link | Targeted phishing emails with malicious links |
+
+## Initial Access
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1566 | Phishing | Gained access via targeted phishing emails |
+| T1078.004 | Valid Accounts (Cloud) | Used compromised accounts to log in |
+
+## Persistence
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1098 | Account Manipulation | Modified accounts to maintain access |
+| T1098.001 | Additional Cloud Credentials | Added OAuth/refresh tokens to preserve access |
+| T1098.005 | Device Registration | Registered rogue devices to bypass MFA |
+| T1671 | Cloud Application Integration | Hijacked OAuth apps to maintain access |
+
+## Defense Evasion
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1564.008 | Email Hiding Rules | Created inbox rules to forward emails |
+| T1656 | Impersonation | Pretended to be trusted organizations |
+| T1036 | Masquerading | Used deceptive URLs |
+| T1078 | Valid Accounts | Used legitimate accounts to evade detection |
+| T1070.008 | Clear Mailbox Data | Moved sent/reply emails to Deleted Items |
+
+## Credential Access
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1111 | MFA Interception | Registered rogue authenticator apps to bypass MFA |
+
+## Collection
+
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1530 | Data from Cloud Storage | Accessed SharePoint/OneDrive data |
+| T1213.002 | SharePoint | Collected data from SharePoint repositories |
+
+## Exfiltration
 
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1020 | Automated Exfiltration | Forwarded emails automatically |
+| T1537 | Transfer Data to Cloud Account | Transferred data to attacker-controlled cloud accounts |
 
-Link to the source CTI report:
+## Discovery
 
-[Jingle Thief – Microsoft Threat Intelligence](unit42.paloaltonetworks.com/cloud-based-gift-card-fraud-campaign/)
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1087 | Account Discovery | Identified user/service accounts |
+| T1526 | Cloud Service Discovery | Identified cloud services in use |
+| T1580 | Cloud Infrastructure Discovery | Mapped virtual machines, Citrix, VPNs |
 
+## Lateral Movement
 
-##Short description: 
-This report describes how the attacking group infiltrated global enterprises in the retail and consumer services sectors, and how, by taking advantage of the organizations' cloud services, they managed to issue themselves gift cards, which they later sold for own profit.
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1021 | Remote Services | Accessed additional accounts using stolen credentials |
+| T1550 | Use of Alternate Authentication Material | Used stolen tokens/rogue devices to bypass MFA |
 
-##Schema:
-![attack schem](pic1.png)
+## Resource Development
 
-##Explanation:
-1.Phishing and smishing for cloud credentials:
-The attackers used phishing emails and SMS messages to lure employees into logging in to a counterfeit Microsoft 365 portal, capturing their credentials. 
-
-2. Mining SharePoint and OneDrive for gift card intel:
-After gaining initial access, the attackers gathered intelligence regarding gift card workflows, financial processes and related information, from the internal documentation. 
-
-
-3. Sending phishing emails for lateral movement:
-In the Jingle Thief campaign, attackers used phishing emails from already compromised accounts to move laterally within organizations. This helped them gain more access across cloud systems and reach accounts with permissions to issue unauthorized gift cards.
-
-4. Forwarding emails to an external sender:
-In the Jingle Thief campaign, attackers set up automatic email forwarding to external addresses to secretly collect sensitive information, monitor internal communication, and maintain access even after detection.
-
-5. Moving phishing emails to deleted items:
-In the Jingle Thief campaign, attackers moved phishing emails to Deleted Items to hide traces, stop victims from seeing follow-ups, and reduce chances of detection by defenders.
-
-6.Modifying authentication methods:
-In the Jingle Thief campaign, attackers modified authentication methods in compromised cloud accounts to maintain persistent access and evade detection. By changing MFA settings or adding their own authentication methods, they ensured continued control even if passwords were reset, allowing them to keep issuing unauthorized gift cards.
-
-
-
-Enterprise tactics:
-•	Reconnaissance 
-•	Initial Access 
-•	Persistence 
-•	Defense Evasion 
-•	Credential Access 
-•	Discovery 
-•	Lateral Movement 
-•	Collection 
-•	Exfiltration 
-•	Resource Development 
-
-
-##Reconnaissance
-Technique	Technique Description	Relation to Jingle Thief
-T1592 – Gather Victim Host Information	Collecting information about cloud hosts and environments using legitimate cloud accounts.	They gather intelligence on each target, including branding, login portals, email templates and domain naming conventions.
-T1589 – Gather Victim Identity Information	Collecting identity information about users.	Helps identify which employees to target via phishing and smishing.
-T1589.001 – Credentials	Collecting or abusing valid cloud credentials.	The messages lure victims to counterfeit Microsoft 365 login portals that mimic legitimate sign-in pages – in this way they steal the credentials.
-T1589.002 – Email Addresses	Collecting employee email addresses.	The threat actors collected employee email addresses, then used them to launch targeted phishing and SMS-based smishing campaigns, leading victims to counterfeit Microsoft 365 login portals
-T1589.003 – Employee Names	Collecting employee names to support targeting.	The attackers gathered employees' names and used it to address them directly, making the messages look personal and legitimate
-T1591 – Gather Victim Organization Information	Collecting information about organizational structure.	The attackers conducted extensive reconnaissance inside the Microsoft 365 environment, gathering organizational information from SharePoint and OneDrive to understand internal structures, workflows, and business processes.
-T1591.003 – Identify Business Tempo	Identifying business activity patterns.	The attackers often align their activity with holiday periods, increasing operations during times of reduced staffing and heightened gift card spending.
-T1591.004 – Identify Roles	Identifying roles inside the organization.	The threat actors conducted reconnaissance to map the environment and check who's in charge of issuing gift cards.
-T1566.002 – Spearphishing Link	Sending targeted phishing emails with malicious links.	The attackers used phishing and smishing to steal credentials, to compromise organizations that issue gift cards. 
-
-
-##Initial Access
-Technique	Technique Description	Relation to Jingle Thief
-T1566 – Phishing (T1566.002 – Spearphishing Link)	Gaining access via targeted phishing emails.	The attackers use phishing and smishing to steal credentials, to compromise organizations that issue gift cards. 
-T1078.004 – Valid Accounts (Cloud)	Using compromised cloud accounts to log in.	The attackers authenticated to Microsoft 365 directly and began navigating the environment, with no malware required. 
-
-
-##Persistence
-Technique	Technique Description	Relation to Jingle Thief
-T1098 – Account Manipulation	Modifying existing accounts to maintain access.	Attackers adjust permissions on compromised accounts for long-term access.
-T1098.001 – Additional Cloud Credentials	Adding new cloud credentials to a compromised account.	Attackers add OAuth/refresh tokens to preserve access even after password resets.
-T1098.005 – Device Registration	Registering attacker-controlled devices.	The attackers enrolled rogue devices and maintained MFA-resistant access.
-T1671 – Cloud Application Integration	Using OAuth applications to maintain persistent access.	Attackers create or hijack OAuth apps to maintain access to Microsoft 365 without passwords.
-
-
-##Defense Evasion
-Technique	Technique Description	Relation to Jingle Thief
-T1564.008 – Email Hiding Rules	Manipulating inbox rules to hide emails.	The attackers often create inbox rules to automatically forward emails to attacker-controlled addresses.
-T1656 – Impersonation	Pretending to be trusted individuals or organizations.	The threat actors also employ deceptive URL, While the URL above appears to point to the legitimate organization’s domain.
-T1036 – Masquerading	Making malicious tools or files appear legitimate.	The threat actors also employ deceptive URL formatting, such as: https://organization[.]com@malicious.cl[/]workspace
-While the URL above appears to point to the legitimate organization’s domain (organization[.]com), browsers interpret everything before the @ as user credentials, and actually navigate to the domain after it (malicious.cl). 
-
-T1078 – Valid Accounts	Using legitimate accounts to evade detection.	The threat actors need access to internal documentation, which they can secure by stealing workers’ account credentials (legitimate accounts).
-T1070.008 - 
-Clear Mailbox Data 
-
- 
-	Adversaries may modify mail and mail application data to remove evidence of their activity	To cover their tracks, the attackers actively manage mailbox folders:
-•	Moving sent phishing emails immediately from Sent Items to Deleted Items
-•	Moving replies from users from Inbox to Deleted Items
-
-
-
-
-##Credential Access
-Technique	Technique Description	Relation to Jingle Thief
-T1111 – MFA Interception	Intercepting or altering MFA mechanisms.	Registering rogue authenticator apps to bypass MFA
-
-
-
-##Collection
-Technique	Technique Description	Relation to Jingle Thief
-T1530 – Data from Cloud Storage	Accessing data stored in cloud storage.	The attackers perform extensive reconnaissance within the Microsoft 365 environment, particularly focusing on SharePoint and OneDrive.
-T1213.002 – SharePoint	Collecting data from SharePoint repositories.	The attackers perform extensive reconnaissance within the Microsoft 365 environment, particularly focusing on SharePoint and OneDrive.
-Exfiltration
-
-Technique	Technique Description	Relation to Jingle Thief
-T1020 – Automated Exfiltration	Automatically exporting collected data.	The attackers create inbox rules to automatically forward emails to attacker-controlled addresses
-T1537 – Transfer Data to Cloud Account	Transferring data to attacker-controlled cloud accounts.	The attackers behind CL-CRI-1032 operate almost exclusively in cloud environments… to impersonate legitimate users, gain unauthorized access to sensitive data…
-
-
-##Discovery
-Technique	Technique Description	Relation to Jingle Thief
-T1087 – Account Discovery	Identifying user or service accounts.	The attackers maintained access for approximately 10 months in the organization, and compromised over 60 user accounts within a single global enterprise
-T1526 – Cloud Service Discovery	Identifying cloud services used by the target.	The activity involved the use of Microsoft 365 services, including SharePoint, OneDrive, Exchange and Entra ID
-T1580 – Cloud Infrastructure Discovery	Mapping cloud infrastructure resources.	Organizational virtual machines, Citrix environments… VPN configuration and access guides
-
-
-##Lateral Movement
-Technique	Technique Description	Relation to Jingle Thief
-T1021 – Remote Services	The actors move laterally by remotely accessing additional Microsoft 365 accounts using stolen credentials.	After harvesting credentials the attackers authenticated to Microsoft 365 directly and began navigating the environment, with no malware required
-T1550 – Use of Alternate Authentication Material	The attackers used stolen session tokens and rogue device registrations to access additional accounts and bypass MFA, enabling cloud-based lateral movement	
-Most intrusions relied on stolen credentials or session tokens. Registering rogue authenticator apps to bypass MFA.
-
-
-
-
-##Resource Development
-Technique	Technique Description	Relation to Jingle Thief
-T1586.002 – email accounts	Adversaries may compromise email accounts that can be used during targeting. Adversaries can use compromised email accounts to further their operations, such as leveraging them to conduct Phishing for Information, Phishing, or large-scale spam email campaigns.	The attackers sent phishing emails from the legitimate account to personnel inside the same organization.
-T1586.003 – Cloud accounts	Adversaries may compromise cloud accounts that can be used during targeting. Adversaries can use compromised cloud accounts to further their operations.	
-The attackers operate almost exclusively in cloud environments once they obtain credentials through phishing
-
-
-
-
-
-
-
-
-
-#Lab dana :
-
-Name: Dana Savenko
-
-Link:https://cloud.google.com/blog/topics/threat-intelligence/dprk-adopts-etherhiding
-
-##The description and the schema of the attack:
-A North Korean hacking group targeted software developers by pretending to be recruiters or legitimate companies. They convinced the victims to run a small “test” file. That file secretly connected to the blockchain, downloaded hidden malicious code stored inside a smart contract, and installed a backdoor on the victim’s computer. With this backdoor, the attackers were able to steal cryptocurrency wallet keys, passwords, and other sensitive data. Because the malicious code was stored on the blockchain instead of a normal server, it was much harder for security systems to detect or remove it.
-The schema:
-
- 1. Attackers pose as recruiters and convince developers to run a “test” file.
-
-2. Victim downloads/executes a small JavaScript loader (or installs a malicious package).
-3. The loader queries a smart contract (via blockchain API/RPC) and retrieves encoded payload data.
-
-4. The loader decodes the on-chain data and runs the second-stage payload (backdoor/stealer).
-
-5. The malware collects wallet keys/passwords, sends data to the attacker, and installs persistence; blockchain storage gives the attackers a resilient delivery/update channel.
-
-Behaviors/ Tactics/ Technics used:
-
-1. Initial Access:
- T1566-Phishing/Spearphishing - The attackers pretended to be recruiters and contacted developers through online platforms. This social engineering trick made the victims trust them and follow their instructions.
-
-2. Execution:
-T1204-User Execution - The infection started only when the victim manually opened or ran the “test” JavaScript file provided by the fake recruiter.
-
-3. Command and Control:
- T1102-Use of Web Service - Instead of a normal command-and-control server, the malware used blockchain smart contracts as a hidden storage channel. The loader called blockchain APIs to retrieve the payload, which worked like a remote command service.
-
-
- 4. Defense Evasion:
- T1027-Obfuscated Files or Information - The malicious code stored on the blockchain was encoded so that it would not be recognized as malware. 
-
-5. Impact:
- T1486-Data Encrypted for Impact - The main goal of the operation was to steal cryptocurrency and sensitive information for profit and intelligence purposes.
-
-6. Credential Access and Collection:
-T1056- Input Capture - The backdoor and info-stealer collected browser passwords, cryptocurrency wallet keys, and other private data from the user’s system.
-
-7. Persistence:
- T1078- Valid Accounts or Autostart Mechanisms - The second-stage malware installed a backdoor on the infected machine to keep long-term access even after reboots.
-
-8. Initial Access:
- T1195-Supply Chain Compromise - In some cases, the attackers used malicious npm packages or compromised websites to deliver the first-stage code.
-
-
-The attackers gained persistent access to victims machines by installing a backdoor delivered via an on-chain payload. They stole sensitive data including cryptocurrency wallet keys, browser passwords, and other credentials. The campaign allowed the operators to update and re-deliver malware via smart contracts, making removal and takedown difficult. Overall, the operation resulted in financial loss for some victims and long-term covert access useful for intelligence or further exploitation.
-
+| Technique | Description | Relation to Jingle Thief |
+|----------|------------|--------------------------|
+| T1586.002 | Email Accounts | Compromised email accounts to launch phishing |
+| T1586.003 | Cloud Accounts | Compromised cloud accounts for operations |
