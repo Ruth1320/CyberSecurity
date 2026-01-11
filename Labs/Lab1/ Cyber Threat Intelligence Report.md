@@ -49,15 +49,15 @@ This report describes how the attacking group infiltrated global enterprises in 
 
 | Technique | Description | Relation to Jingle Thief |
 |----------|------------|--------------------------|
-| T1592 | Gather Victim Host Information | Collected intelligence on cloud hosts and portals |
-| T1589 | Gather Victim Identity Information | Identifying employees for phishing and smishing |
-| T1589.001 | Credentials | Stole credentials via counterfeit Microsoft 365 login portals |
-| T1589.002 | Email Addresses | Collected employee emails to launch targeted phishing campaigns |
-| T1589.003 | Employee Names | Gathered names to personalize phishing messages |
-| T1591 | Gather Victim Organization Information | Mapped organizational structures from SharePoint/OneDrive |
-| T1591.003 | Identify Business Tempo | Aligned activity with holiday periods |
-| T1591.004 | Identify Roles | Checked who can issue gift cards |
-| T1566.002 | Spearphishing Link | Targeted phishing emails with malicious links |
+| T1592 – Gather Victim Host Information |Collecting information about cloud hosts and environments using legitimate cloud accounts. | They gather intelligence on each target, including branding, login portals, email templates and domain naming conventions. |
+| T1589 – Gather Victim Identity Information | Collecting identity information about users. | Helps identify which employees to target via phishing and smishing. |
+| T1589.001 – Credentials | Collecting or abusing valid cloud credentials. |The messages lure victims to counterfeit Microsoft 365 login portals that mimic legitimate sign-in pages – in this way they steal the credentials.|
+|T1589.002 – Email Addresses | Collecting employee email addresses.|The threat actors collected employee email addresses, then used them to launch targeted phishing and SMS-based smishing campaigns, leading victims to counterfeit Microsoft 365 login portals |
+| T1589.003 – Employee Names|Collecting employee names to support targeting. | The attackers gathered employees' names and used it to address them directly, making the messages look personal and legitimate |
+|T1591 – Gather Victim Organization Information |Collecting information about organizational structure.| The attackers conducted extensive reconnaissance inside the Microsoft 365 environment, gathering organizational information from SharePoint and OneDrive to understand internal structures, workflows, and business processes. |
+| T1591.003 – Identify Business Tempo|Identifying business activity patterns. | The attackers often align their activity with holiday periods, increasing operations during times of reduced staffing and heightened gift card spending. |
+| T1591.004 – Identify Roles |Identifying roles inside the organization. | The threat actors conducted reconnaissance to map the environment and check who's in charge of issuing gift cards. |
+| T1566.002 – Spearphishing Link | Sending targeted phishing emails with malicious links. | The attackers used phishing and smishing to steal credentials, to compromise organizations that issue gift cards.  |
 
 ## Initial Access
 
