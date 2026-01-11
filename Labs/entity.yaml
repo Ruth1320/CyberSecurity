@@ -1,0 +1,4 @@
+id: numberanalyzeragent
+name: Number Analyzer Agent
+description: Analyze a list of numbers and return basic statistics.
+entrypoint: agent.py
