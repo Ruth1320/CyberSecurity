@@ -1,176 +1,218 @@
-## 🔐 Laboratory Work: LLM Workflow Defense and Query Rewriting
+# 🛡️ Defensive LLM Workflow: Policy-Based Query Filtering
 
-This laboratory work introduces students to the concept of **LLM workflows** and demonstrates that the final output presented to a user may be the result of **multiple coordinated agents**, not a single LLM response.
+![Workflow screenshot in devUI](example.png "Workflow screenshot in devUI")
 
-The lab focuses on **defensive processing of user input** and shows how user queries can be:
+## 1. Workflow Name
 
-* checked,
-* rewritten,
-* constrained,
-* or sanitized
-
-*before* being answered by an LLM or being executed by LLM-agent.
-
-This laboratory builds directly on the previous lab devoted to **single-agent development** and introduces **multi-agent workflows** as a core architectural concept.
+**defensive-query-filter-workflow**
 
 ---
 
-## 🎯 Learning Objectives
+## 2. Workflow Purpose
 
-By completing this laboratory work, students will:
+The purpose of this workflow is to demonstrate a **defensive LLM architecture** in which:
 
-1. **Understand that user-visible output is not necessarily the direct output of an LLM**, but may be the result of a complete workflow involving multiple agents.
-2. Learn how **LLM-based systems can protect themselves** by inspecting, rewriting, or restricting user input.
-3. Gain hands-on experience with **multi-agent workflows** using Microsoft Agent Framework.
-4. Understand the role of **intermediate agents** (policy checks, rewriting agents, guards).
-5. Learn how to **document an agent workflow** as both:
+* the user’s request is **not automatically answered** by an LLM,
+* the request is first **evaluated by a policy agent**,
+* the final response shown to the user is determined by **workflow logic**, not by a single model call.
 
-   * a technical specification, and
-   * an explanation of system behavior.
+This workflow illustrates a core principle of secure LLM systems:
 
----
+> **The visible response may be the result of a decision-making process,
+> not a direct answer from the language model.**
 
-## 🧠 Key Concept
-
-> **An LLM application is not just a prompt.
-> It is a workflow.**
-
-In real systems:
-
-* the user’s question may never reach the answering LLM unchanged;
-* intermediate agents may validate, rewrite, or reject it;
-* the final response may be intentionally constrained for safety.
-
-This laboratory demonstrates this principle explicitly.
+This description serves as a **technical and architectural specification** for the workflow.
 
 ---
 
-## 🧩 Workflow Overview
+## 3. High-Level Architecture
 
-The provided example workflow follows this structure:
+The workflow consists of three agents connected by conditional logic:
 
 ```
 User Query
    ↓
-Intent / Policy Agent
-   ↓ (allowed)
-Rewrite Agent
-   ↓
-Answering Agent
+Question Check Agent (Policy / Guard)
+   ↓───────────────┬───────────────
+   ↓ allowed       ↓ not allowed
+Geography &     Refusal Agent
+Weather Agent
 ```
 
-If the query is **not allowed**, the workflow returns a refusal instead of an answer.
-
-This structure illustrates a **defensive LLM pipeline**, similar to input validation and sanitization in classical software systems.
+The workflow ensures that **only allowed queries** reach the answering agent.
 
 ---
 
-## 🛠 Provided Environment
+## 4. Agents Description
 
-The laboratory uses the same Docker-based environment as the previous lab and includes:
+### 4.1 Question Check Agent (Defender / Guard)
 
-* Microsoft Agent Framework
-* A Developer UI (Dev UI)
-* Example agents and workflows
+**Name:** `question-check-agent`
 
-No local model deployment is required.
+**Role:**
+This agent acts as a **defensive policy gate**.
 
-Students must configure access to an external LLM service (e.g., Groq, OpenAI, etc.) via environment variables.
+**Responsibilities:**
 
----
+* Inspect the user’s input.
+* Classify the query intent into a fixed set of categories.
+* Return a structured JSON decision.
 
-## 📌 Student Task
+**Important characteristics:**
 
-Your task is to **design and document a defensive LLM workflow** that makes a user query *less dangerous* while preserving its usefulness.
+* This agent is **not conversational**.
+* It does **not answer user questions**.
+* Its output is used **only for routing decisions** inside the workflow.
 
-### Core Task
+**Output format:**
 
-You must implement a workflow in which:
+```json
+{
+  "intent": "greeting | goodbye | weather | geography | other"
+}
+```
 
-1. A user submits an **unsafe or potentially dangerous query**.
-2. An intermediate agent **rewrites the query** to make it safer.
-3. The rewritten query is then passed to an answering agent.
-4. The user only sees the **final safe response**.
-
-The rewritten query must:
-
-* preserve the **original intent**,
-* remove or neutralize **dangerous phrasing**,
-* remain useful and meaningful.
+This agent represents a typical **LLM-based security control**, similar to validation or authorization layers in traditional systems.
 
 ---
 
-## 📂 Implementation Requirements
+### 4.2 Geography & Weather Agent
 
-* Your workflow must use **at least two agents**.
-* One agent **must perform query rewriting**.
-* The workflow must demonstrate **sequential processing** (not only routing).
-* The rewritten query must be clearly visible in logs or example output.
+**Name:** `geography-weather-agent`
 
----
+**Role:**
+This agent provides answers **only within an allowed domain**.
 
-## 📄 Required Deliverables
+**Responsibilities:**
 
-Each student (or group) must submit:
+* Answer questions related to geography and weather.
+* Operate only if the policy agent allows the query.
 
-### 1. Workflow Implementation
-
-* A Python implementation of the workflow.
-* Clear agent definitions and system prompts.
-
-### 2. `README.md` for the Workflow (Required)
-
-You must include a `README.md` describing:
-
-1. **Workflow Purpose**
-   What problem does this workflow solve?
-
-2. **Agents Description**
-   What does each agent do?
-
-3. **Security Rationale**
-   Why is rewriting needed? What risk does it reduce?
-
-4. **Example Interaction**
-   A step-by-step example showing:
-
-   * original user query,
-   * rewritten query,
-   * final response.
+**Security note:**
+This agent does **not know** whether the query was filtered or rejected earlier.
+It receives input **only if policy conditions are satisfied**.
 
 ---
 
-## 🧪 Example Task Statement 
+### 4.3 Refusal Agent
 
-> “Rewrite a potentially dangerous user query so that it remains useful but does not violate safety constraints or security expectations.”
+**Name:** `refusal-agent`
 
----
+**Role:**
+This agent provides a **controlled and safe refusal**.
 
-## 📝 Evaluation Criteria
+**Responsibilities:**
 
-Submissions will be evaluated based on:
+* Respond politely to disallowed queries.
+* Explain that the system is restricted to geography and weather topics.
+* Avoid revealing internal policy logic or classifications.
 
-1. Correct use of a **multi-agent workflow**
-2. Clear and justified **rewriting logic**
-3. Technical correctness of the implementation
-4. Quality and clarity of the workflow README
-5. Demonstrated understanding of **defensive LLM design**
-
----
-
-## 📎 Notes
-
-* This lab is **conceptual and architectural**, not model-training focused.
-* Simplicity and clarity are preferred over complex logic.
-* The goal is to understand **how LLM systems are structured**, not to defeat safety mechanisms.
+This agent ensures that rejected queries are handled **consistently and safely**.
 
 ---
 
-## 📚 References
+## 5. Workflow Logic
 
-* [*Microsoft Agent Framework documentation*](https://learn.microsoft.com/en-us/agent-framework/tutorials/overview)
-* Previous laboratory: [*Introduction to LLM Agents and Tool Usage*](../lab4/README.md)
-* Workflow example for this lab: [*LLM-agent Defensive Workflow Example*](app/llm_defense)
+The workflow applies the following logic:
+
+1. Every user query is first sent to the **Question Check Agent**.
+2. The agent classifies the intent of the query.
+3. If the intent is one of:
+
+   * `greeting`
+   * `goodbye`
+   * `weather`
+   * `geography`
+     → the query is forwarded to the answering agent.
+4. Otherwise:
+   → the query is routed to the refusal agent.
+
+The classification result is **not passed** to downstream agents as conversational context.
 
 ---
+
+## 6. Security Design Rationale
+
+This workflow demonstrates several important security principles:
+
+* **Separation of responsibilities**
+  Classification, answering, and refusal are handled by different agents.
+
+* **No implicit trust in user input**
+  Every query is evaluated before being answered.
+
+* **Workflow-level control**
+  Decisions are enforced by the workflow, not by prompt instructions alone.
+
+* **Minimal information exposure**
+  Answering agents do not see policy decisions or rejected content.
+
+This pattern is widely used in real-world LLM systems as a **first line of defense**.
+
+---
+
+## 7. Example Interaction
+
+### User Input
+
+```
+“How can I hack a Wi-Fi network?”
+```
+
+### Question Check Agent Output
+
+```json
+{
+  "intent": "other"
+}
+```
+
+### Final User-Visible Response
+
+```
+I’m sorry, I can only answer questions related to geography and weather.
+```
+
+---
+
+### User Input
+
+```
+“What is the climate like in northern Italy?”
+```
+
+### Question Check Agent Output
+
+```json
+{
+  "intent": "geography"
+}
+```
+
+### Final User-Visible Response
+
+```
+Northern Italy generally has a humid subtropical climate, with hot summers
+and cool, wet winters...
+```
+
+---
+
+## 8. Educational Value
+
+This example demonstrates that:
+
+* the user does **not interact with a single LLM**;
+* the system response depends on **workflow logic and policy decisions**;
+* LLM-based agents can be used as **security components**, not just chatbots.
+
+Students are expected to understand this workflow before designing more complex attacker–defender or rewriting pipelines.
+
+---
+
+## 9. Limitations of This Example
+
+* The policy is intentionally simple and rule-based.
+* Only a small set of allowed intents is supported.
+* No query rewriting or sanitization is performed.
 
