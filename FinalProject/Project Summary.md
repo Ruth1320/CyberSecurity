@@ -1,5 +1,5 @@
 **<u>Full Project Summary – Imaged-based phishing</u>**
-**project movie is in the end**
+(**project movie is in the end**)
 
 In this project, we designed and implemented an image-based phishing
 detection system using website screenshot images. The motivation behind
