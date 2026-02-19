@@ -27,9 +27,9 @@ and culminates in an **AI-assisted phishing analysis project**.
 |----|------|------|
 | **Lab 1** | 🧩 Cyber Threat Intelligence Mapping | Mapping real CTI reports to MITRE ATT&CK |
 | **Lab 2** | 🚨 Network Anomaly Detection | ML-based anomaly detection on network traffic |
-| **Lab 3** | Accelerated AI|Exploring advanced AI applications
+| **Lab 3** | Accelerated AI|cybersecurity analysis pipeline based on event streaming and asynchronous processing
 | **Lab 4** | 🤖 LLM Tools & Agents | Using LLMs to explain and analyze security data |
-| **Lab 5** | LLM Agent Workflow|Building workflows with LLM agents
+| **Lab 5** | LLM Agent Workflow|defensive processing of user input 
 
 
 
